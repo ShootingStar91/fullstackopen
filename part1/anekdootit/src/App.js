@@ -30,7 +30,7 @@ const App = () => {
   const mostVoted = function(votes) {
     return votes.indexOf(Math.max.apply(null, votes))
   }
-
+  
 
   console.log("Selected: " + selected)
   console.log("Votes: ")
