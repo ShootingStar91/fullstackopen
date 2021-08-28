@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 content-type: application/json
 
 {
-    "title": "Uusi Blogi 2",
+    "title": "Uusi Blogi 3",
   "author": "Alli Paasikivi 2",
   "url": "http://allin.nettisivut.fi",
-  "likes": "17"
+  "likes": "11"
 }
