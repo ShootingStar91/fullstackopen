@@ -84,8 +84,8 @@ test('new blog likes automatically set to 0 if not given', async () => {
     .expect('Content-Type', /application\/json/)
 
   const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(initialBlogs.length + 1)
-  expect(response.body[initialBlogs.length]).toEqual({...newBlog, id: expect.any(String), likes: 0})
+  const newBlogAtDatabase = response.body.find((blog) => blog.title === 'Harri Potter 8')
+  expect(newBlogAtDatabase).toEqual({...newBlog, id: expect.any(String), likes: 0})
 })
 
 test('missing title leads to status 400', async () => {
