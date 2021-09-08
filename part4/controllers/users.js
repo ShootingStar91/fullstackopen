@@ -2,12 +2,12 @@ const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
 
-usersRouter.post('/', async (request, response, next) => {
+usersRouter.post('/', async (request, response) => {
   const body = request.body
 
   // Check password length
   if (body.password === undefined || body.password.length < 3) {
-    response.status(400).send({ error: 'Password minimum length 3 characters'})
+    response.status(400).send({ error: 'Password minimum length 3 characters' })
   }
 
   const saltRounds = 10

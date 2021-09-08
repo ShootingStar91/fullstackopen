@@ -1,8 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
 const userExtractor = require('../utils/middleware').userExtractor
-const jwt = require('jsonwebtoken')
 
 
 
@@ -21,7 +19,7 @@ blogsRouter.post('/', userExtractor, async (request, response) => {
     likes: body.likes,
     user: request.user._id
   })
-  
+
 
   const result = await blog.save()
 

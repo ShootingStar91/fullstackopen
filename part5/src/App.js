@@ -9,14 +9,14 @@ const ShowErrormsg = ({ message }) => {
   if (message === null || message === '') {
     return null
   }
-  return <div className="error">{message}</div>
+  return <div id='error-notification' className="error">{message}</div>
 }
 
 const ShowSuccessmsg = ( { message } ) => {
   if (message === null || message === '') {
     return null
   }
-  return <div className="success">{message}</div>
+  return <div id='success-notification' className="success">{message}</div>
 }
 
 const LoginPage = (props) => {
@@ -24,13 +24,13 @@ const LoginPage = (props) => {
     <div>
       <h2>Login to bloglist app</h2>
       <form onSubmit={props.tryLogin}>
-        <p>Username <input onChange={props.handleUsernameChange} />
+        <p>Username <input id="username" onChange={props.handleUsernameChange} />
         </p>
         <p>
-          Password <input type="password" onChange={props.handlePasswordChange} />
+          Password <input id="password" type="password" onChange={props.handlePasswordChange} />
         </p>
         <p>
-          <button type="submit">Log in</button>
+          <button id="login-button" type="submit">Log in</button>
         </p>
       </form>
     </div>
@@ -135,7 +135,7 @@ const App = () => {
   }
 
   const likeButtonClicked = (blog) => {
-    console.log('likeButtonClicked in app.js: ', blog)
+
     try {
       blogService.likeBlog(blog.id, blog.likes)
       refreshBlogs()
@@ -158,7 +158,6 @@ const App = () => {
       triggerSuccess('Blog deleted')
     } catch (exception) {
       triggerError('Error with deleting blog')
-      console.log(exception.response)
     }
   }
 
@@ -176,7 +175,7 @@ const App = () => {
     return (<div>
       <div>
         <h2>Blogs</h2>
-        <p>{user.name} is logged in. <button onClick={tryLogout}>Logout</button></p>
+        <p>{user.name} is logged in. <button id='logout-button' onClick={tryLogout}>Logout</button></p>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} likeButtonClicked={likeButtonClicked}
             deleteButtonClicked={deleteButtonClicked} />
@@ -193,7 +192,7 @@ const App = () => {
           <div>
             <br/>
             <br/>
-            <button onClick={() => setBlogFormVisible(true)}>
+            <button id='show-blog-form-button' onClick={() => setBlogFormVisible(true)}>
           Add new blog
             </button>
           </div>

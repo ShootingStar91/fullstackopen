@@ -18,13 +18,13 @@ const initialBlogs = [
     author: 'Alli Paasikivi',
     url: 'http://allin.blogi.fi',
     likes: 4
-  }, 
+  },
   {
     title: 'Allin muistelmat 2',
     author: 'Alli Paasikivi',
     url: 'http://allin.blogi.fi',
     likes: 7
-  }, 
+  },
   {
     title: 'Allin muistelmat 3',
     author: 'Alli Paasikivi',
@@ -36,7 +36,7 @@ const initialBlogs = [
     author: 'Jo Row',
     url: 'http://wizardinworld.fi',
     likes: 210
-  }, 
+  },
 ]
 
 
@@ -44,14 +44,14 @@ beforeEach(async () => {
 
   await User.deleteMany({})
   const testUser = { username: 'Kayttajanimi12345', password: 'abcde' }
-  console.log("TEST USER: ", testUser)
+  console.log('TEST USER: ', testUser)
   const createUserResponse = await api.post('/api/users').send(testUser)
-  console.log("CreateUserResponse: ", createUserResponse)
-  
+  console.log('CreateUserResponse: ', createUserResponse)
+
   const loginResponse = await api.post('/api/login').send(testUser)
 
 
-  console.log("loginResponse: ", loginResponse.body.token)
+  console.log('loginResponse: ', loginResponse.body.token)
   token = loginResponse.body.token
 
   const decodedToken = jwt.verify(token, process.env.SECRET)
@@ -62,7 +62,7 @@ beforeEach(async () => {
 
   await Blog.deleteMany({})
   initialBlogs.forEach(async (blog) => {
-    let blogObject = new Blog({...blog, user: user })
+    let blogObject = new Blog({ ...blog, user: user })
     await blogObject.save()
   })
 })
@@ -97,7 +97,7 @@ test('blog can be posted through api', async () => {
   const response = await api.get('/api/blogs')
 
   //expect(response.body).toHaveLength(initialBlogs.length + 1)
-  expect(response.body).toContainEqual({...newBlog, id: expect.any(String), user: expect.anything()})
+  expect(response.body).toContainEqual({ ...newBlog, id: expect.any(String), user: expect.anything() })
 })
 
 test('new blog likes automatically set to 0 if not given', async () => {
@@ -117,7 +117,7 @@ test('new blog likes automatically set to 0 if not given', async () => {
 
   const response = await api.get('/api/blogs')
   const newBlogAtDatabase = response.body.find((blog) => blog.title === 'Harri Potter 8')
-  expect(newBlogAtDatabase).toEqual({...newBlog, id: expect.any(String), likes: 0, user: expect.anything()})
+  expect(newBlogAtDatabase).toEqual({ ...newBlog, id: expect.any(String), likes: 0, user: expect.anything() })
 })
 
 test('missing title leads to status 400', async () => {
@@ -126,11 +126,11 @@ test('missing title leads to status 400', async () => {
     url: 'http://wizard.fi'
   }
   await api
-  .post('/api/blogs')
-  .send(newBlog)
-  .set('Authorization', 'bearer ' + token)
+    .post('/api/blogs')
+    .send(newBlog)
+    .set('Authorization', 'bearer ' + token)
 
-  .expect(400)
+    .expect(400)
 
 })
 
@@ -140,9 +140,9 @@ test('missing url leads to status 400', async () => {
     title: 'Harri Potterin Muistelmat 9'
   }
   await api
-  .post('/api/blogs')
-  .send(newBlog)
-  .set('Authorization', 'bearer ' + token)
+    .post('/api/blogs')
+    .send(newBlog)
+    .set('Authorization', 'bearer ' + token)
 
   expect(400)
 

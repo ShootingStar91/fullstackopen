@@ -16,7 +16,7 @@ describe('total likes', () => {
       url: 'http://allin.kotisivut.fi',
       likes: 1,
       __v: 0
-    },    
+    },
     {
       _id: '123asdfasdf1af',
       title: 'Alli Paasikiven muistelmat 2',
@@ -59,7 +59,7 @@ describe('favorite blog', () => {
       url: 'http://allin.kotisivut.fi',
       likes: 1,
       __v: 0
-    },    
+    },
     {
       _id: '123asdfasdf1af',
       title: 'Alli Paasikiven muistelmat 2',
@@ -67,7 +67,7 @@ describe('favorite blog', () => {
       url: 'http://allin.kotisivut.fi',
       likes: 5,
       __v: 0
-    },    
+    },
     {
       _id: '123vxvssfsaa',
       title: 'Alli Paasikiven muistelmat 3',
@@ -94,7 +94,7 @@ describe('author with most blogs', () => {
       url: 'http://allin.kotisivut.fi',
       likes: 1,
       __v: 0
-    },    
+    },
     {
       _id: '123asdfasdf1af',
       title: 'Alli Paasikiven muistelmat 2',
@@ -102,7 +102,7 @@ describe('author with most blogs', () => {
       url: 'http://allin.kotisivut.fi',
       likes: 5,
       __v: 0
-    },    
+    },
     {
       _id: '123vxvssfsaa',
       title: 'Harrin Muistelmat 1',
@@ -110,7 +110,7 @@ describe('author with most blogs', () => {
       url: 'http://wizardinworld.fi',
       likes: 3,
       __v: 0
-    },    
+    },
     {
       _id: '6785456hfghfghfgh',
       title: 'Harrin Muistelmat 2',
@@ -118,7 +118,7 @@ describe('author with most blogs', () => {
       url: 'http://wizardinworld.fi',
       likes: 3,
       __v: 0
-    },    
+    },
     {
       _id: '34534dfgdfg',
       title: 'Harrin Muistelmat 3',
@@ -132,7 +132,7 @@ describe('author with most blogs', () => {
 
   test('five blogs from two authors', () => {
     const result = listHelper.mostBlogs(fiveBlogsFromTwoAuthors)
-    expect(result).toEqual({name: 'Jo Row', amount: 3 })
+    expect(result).toEqual({ name: 'Jo Row', amount: 3 })
 
   })
 })
@@ -146,7 +146,7 @@ describe('author with most likes', () => {
       url: 'http://allin.kotisivut.fi',
       likes: 1,
       __v: 0
-    },    
+    },
     {
       _id: '123asdfasdf1af',
       title: 'Alli Paasikiven muistelmat 2',
@@ -154,7 +154,7 @@ describe('author with most likes', () => {
       url: 'http://allin.kotisivut.fi',
       likes: 5,
       __v: 0
-    },    
+    },
     {
       _id: '123vxvssfsaa',
       title: 'Harrin Muistelmat 1',
@@ -162,7 +162,7 @@ describe('author with most likes', () => {
       url: 'http://wizardinworld.fi',
       likes: 3,
       __v: 0
-    },    
+    },
     {
       _id: '6785456hfghfghfgh',
       title: 'Harrin Muistelmat 2',
@@ -170,7 +170,7 @@ describe('author with most likes', () => {
       url: 'http://wizardinworld.fi',
       likes: 3,
       __v: 0
-    },    
+    },
     {
       _id: '34534dfgdfg',
       title: 'Harrin Muistelmat 3',
