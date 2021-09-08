@@ -38,7 +38,7 @@ test('renders author and title only', () => {
   expect(postBlog.mock.calls[0][0]).toBe(blog.title)
   expect(postBlog.mock.calls[0][1]).toBe(blog.author)
   expect(postBlog.mock.calls[0][2]).toBe(blog.url)
-  
+
 
 
 

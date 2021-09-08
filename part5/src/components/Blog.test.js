@@ -11,8 +11,8 @@ const blog = {
 }
 
 const blogComponent =
-  <Blog blog={blog} likeButtonClicked={() => {}} 
-        deleteButtonClicked={() => {}}/>
+  <Blog blog={blog} likeButtonClicked={() => {}}
+    deleteButtonClicked={() => {}}/>
 
 
 test('renders author and title only', () => {
@@ -29,7 +29,7 @@ test('renders author and title only', () => {
   )
   expect(component.container).not.toHaveTextContent(
     213
-  )  
+  )
   expect(component.container).not.toHaveTextContent(
     'http://hermionenblogi.fi'
   )
@@ -37,9 +37,9 @@ test('renders author and title only', () => {
 
 test('clicking the show button calls event', () => {
 
-const component = render(
-  blogComponent
-)
+  const component = render(
+    blogComponent
+  )
   const button = component.getByText('Show')
 
   fireEvent.click(button)
@@ -61,7 +61,7 @@ test('clicking like button of blog registers', () => {
 
 
   const component = render(
-    <Blog blog={blog} likeButtonClicked={mockHandlerLike} 
+    <Blog blog={blog} likeButtonClicked={mockHandlerLike}
       deleteButtonClicked={() => {}}/>
 
   )
