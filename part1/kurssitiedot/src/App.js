@@ -19,6 +19,7 @@ const Content = (props) => {
         <Part part={props.parts[1]}/>
         <Part part={props.parts[2]}/>
   </div>
+
   )
 }
 
