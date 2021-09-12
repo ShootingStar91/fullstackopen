@@ -13,16 +13,9 @@ const AnecdoteList = () => {
   })
   const dispatch = useDispatch()
 
-  const timeout = (ms) => {
-    return new Promise( res => setTimeout(res, ms))
-  }
-
-  const voteAnecdote = async (id, anecdote) => {
-    const voteReturn = vote(id)
-    dispatch(voteReturn)
-    dispatch(setNotification('You voted for "' + anecdote + '"'))
-    await timeout(5000);
-    dispatch(emptyNotification())
+  const voteAnecdote = async (anecdote) => {
+    dispatch(vote(anecdote))
+    dispatch(setNotification('You voted for "' + anecdote.content + '"', 5))
   }
 
   sortByVotes(anecdotes)
@@ -36,7 +29,7 @@ const AnecdoteList = () => {
           </div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => voteAnecdote(anecdote.id, anecdote.content)}>vote</button>
+            <button onClick={() => voteAnecdote(anecdote)}>vote</button>
           </div>
         </div>
       )}    
