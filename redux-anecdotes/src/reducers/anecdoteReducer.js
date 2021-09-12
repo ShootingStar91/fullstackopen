@@ -1,11 +1,4 @@
-const anecdotesAtStart = [
-  'If it hurts, do it more often',
-  'Adding manpower to a late software project makes it later!',
-  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  'Premature optimization is the root of all evil.',
-  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
+import anecdotesService from '../services/anecdotes'
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
@@ -16,10 +9,6 @@ const asObject = (anecdote) => {
     votes: 0
   }
 }
-
-
-
-const initialState = anecdotesAtStart.map(asObject)
 
 export const sortByVotes = (anecdotes) => {
   console.log("sort: ", anecdotes)
@@ -34,18 +23,22 @@ export const sortByVotes = (anecdotes) => {
   })
 }
 
-const anecdoteReducer = (state = initialState, action) => {
-  //console.log("anecdoteReduer STATE: ", state, " ACTION: ", action)
+
+const anecdoteReducer = (state = [], action) => {
+  console.log("anecdoteReducer STATE: ", state, " ACTION: ", action)
   switch(action.type) {
-    case 'VOTE':
+    case 'VOTE_ANECDOTE':
       return state.map((anecdote) => {
         if (anecdote.id === action.data.id) {
           return {...anecdote, votes: anecdote.votes + 1}
         } else {
           return (anecdote)
         }})
-    case 'NEW':
+    case 'ADD_ANECDOTE':
+      
       return [...state, action.data]
+    case 'INITIALIZE_ANECDOTES':
+      return action.data
     default:
       return state
   }
@@ -53,18 +46,24 @@ const anecdoteReducer = (state = initialState, action) => {
 
 export const vote = (id) => {
   return {
-    type: 'VOTE',
+    type: 'VOTE_ANECDOTE',
     data: { id }
   }
 }
 
-export const addAnecdote = (content) => {
+export const addAnecdote = (data) => {
   return {
-    type: 'NEW',
-    data: asObject(content)
+    type: 'ADD_ANECDOTE',
+    data
   }
 }
 
-
+export const initializeAnecdotes = (anecdotes) => {
+  console.log("initializeAnecdotes, data: ", anecdotes)
+  return {
+    type: 'INITIALIZE_ANECDOTES',
+    data: anecdotes
+  }
+}
 
 export default anecdoteReducer

@@ -5,9 +5,12 @@ import { useSelector, useDispatch } from 'react-redux'
 
 
 const AnecdoteList = () => {
-
   const filter = useSelector(state => state.filter)
-  const anecdotes = useSelector(state => state.anecdotes.filter((anecdote) => anecdote.content.toLowerCase().includes(filter.toLowerCase())))
+  const anecdotes = useSelector(state => {
+    console.log("anecdotelist, state: ", state)
+    return state.anecdotes.filter((anecdote) => anecdote.content.toLowerCase().includes(filter.toLowerCase()))
+  
+  })
   const dispatch = useDispatch()
 
   const timeout = (ms) => {
