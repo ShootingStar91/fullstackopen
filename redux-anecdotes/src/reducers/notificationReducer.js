@@ -1,13 +1,22 @@
 
 
 export const setNotification = (msg, seconds) => {
-  return async dispatch => {  
+
+  return async dispatch => {
+
+    const id = setTimeout(() => {
+      dispatch({type: 'EMPTY_NOTIFICATION'})
+    }, seconds * 1000)
+
     dispatch({type: 'SET_NOTIFICATION',
-      data: msg
+      data: {
+        msg: msg,
+        id: id
+      }
     })
-    await setTimeout(() => {    dispatch({type: 'EMPTY_NOTIFICATION'})
-  }, seconds * 1000)
+  
   }
+
 }
 
 
@@ -21,14 +30,16 @@ export const emptyNotification = () => {
 
 
 
-
-const notificationReducer = (state = 'Initial notification', action) => {
+const notificationReducer = (state = {msg: 'Initial notification', timeout_id: null}, action) => {
   //console.log("notificationReducer STATE: ", state, " ACTION: ", action)
   switch (action.type) {
     case 'SET_NOTIFICATION':
+      if (state.id) {
+        clearTimeout(state.id)
+      }
       return action.data
     case 'EMPTY_NOTIFICATION':
-      return ''
+      return {timeout_id: null, msg: ''}
     default:
       return state
   }

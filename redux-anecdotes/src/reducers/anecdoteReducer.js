@@ -11,7 +11,7 @@ const asObject = (anecdote) => {
 }
 
 export const sortByVotes = (anecdotes) => {
-  console.log("sort: ", anecdotes)
+
   return anecdotes.sort((prev, next) => {
     const diff = prev.votes - next.votes
     if (diff > 0) {
@@ -25,7 +25,7 @@ export const sortByVotes = (anecdotes) => {
 
 
 const anecdoteReducer = (state = [], action) => {
-  console.log("anecdoteReducer STATE: ", state, " ACTION: ", action)
+
   switch(action.type) {
     case 'VOTE_ANECDOTE':
       return state.map((anecdote) => {if (anecdote.id === action.data.id) {
