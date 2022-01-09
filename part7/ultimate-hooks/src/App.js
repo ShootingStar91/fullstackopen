@@ -23,7 +23,12 @@ const useResource = (baseUrl) => {
   // ...
 
   const create = (resource) => {
-    // ...
+  
+    const response = axios.post(baseUrl, resource).then(() => {
+      console.log("sent post request")
+      console.log(response)
+      setResources([resource, ...resources])  
+    })
   }
 
   const service = {

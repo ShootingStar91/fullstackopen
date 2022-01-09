@@ -1,0 +1,7 @@
+node_modules
+build
+frontend/cypress/integration/blog_app.spec.js
+
+/cypress/integration/blog_app.spec.js
+frontend/node_modules
+frontend/build
