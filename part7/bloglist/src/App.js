@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { triggerError, triggerSuccess } from './reducers/notificationReducer'
+import { connect } from 'react-redux'
 
-
-const ShowErrormsg = ({ message }) => {
+const ShowErrormsg = () => {
+  const message = useSelector(state => state.error_msg)
+  console.log('Message in showerrormsg: ')
+  console.log(message)
   if (message === null || message === '') {
     return null
   }
   return <div id='error-notification' className="error">{message}</div>
 }
 
-const ShowSuccessmsg = ( { message } ) => {
+const ShowSuccessmsg = () => {
+  const message = useSelector(state => state.success_msg)
+  console.log('Message in showsuccessmsg: ')
+  console.log(message)
+
   if (message === null || message === '') {
     return null
   }
@@ -37,29 +46,15 @@ const LoginPage = (props) => {
   )
 }
 
-const App = () => {
+const RawApp = (props) => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [errormsg, setErrormsg] = useState('')
-  const [successmsg, setSuccessmsg] = useState('')
+
+
   const [blogFormVisible, setBlogFormVisible] = useState(false)
 
-  const triggerError = (message) => {
-    setErrormsg(message)
-    setTimeout(() => {
-      setErrormsg('')
-    }, 5000)
-  }
-
-
-  const triggerSuccess = (message) => {
-    setSuccessmsg(message)
-    setTimeout(() => {
-      setSuccessmsg('')
-    }, 5000)
-  }
   const refreshBlogs = () => {
     blogService.getAll().then(blogs => {
       blogs.sort((first, second) => {
@@ -96,16 +91,16 @@ const App = () => {
 
       setUser(user)
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
-      triggerSuccess('Login successful')
+      props.triggerSuccess('Login successful')
     } catch (exception) {
-      triggerError('Login failed')
+      props.triggerError('Login failed')
     }
   }
 
   const tryLogout = async () => {
     window.localStorage.removeItem('loggedUser')
     setUser(null)
-    triggerSuccess('Logged out.')
+    props.triggerSuccess('Logged out.')
   }
 
   const handleUsernameChange = (event) => {
@@ -119,16 +114,17 @@ const App = () => {
   const submitBlog = async (title, author, url) => {
     try {
       await blogService.postBlog(title, author, url)
-      triggerSuccess('New blog posted successfully')
+      console.log('Calling trigger success')
+      props.triggerSuccess('New blog posted successfully')
       refreshBlogs()
       setBlogFormVisible(false)
     } catch (exception) {
       if (exception.response.status === 400) {
-        triggerError('Could not post blog. Title and url are required!')
+        props.triggerError('Could not post blog. Title and url are required!')
       } else if (exception.response.status === 401) {
-        triggerError('Invalid login token. Please logout and then login again.')
+        props.triggerError('Invalid login token. Please logout and then login again.')
       } else {
-        triggerError('Could not post blog. Error unknown.')
+        props.triggerError('Could not post blog. Error unknown.')
       }
     }
 
@@ -139,9 +135,9 @@ const App = () => {
     try {
       blogService.likeBlog(blog.id, blog.likes)
       refreshBlogs()
-      triggerSuccess('Liked blog')
+      props.triggerSuccess('Liked blog')
     } catch (exception) {
-      triggerError('Error with like button')
+      props.triggerError('Error with like button')
       console.log(exception.response)
     }
   }
@@ -155,9 +151,9 @@ const App = () => {
       await blogService.deleteBlog(blog.id)
       refreshBlogs()
 
-      triggerSuccess('Blog deleted')
+      props.triggerSuccess('Blog deleted')
     } catch (exception) {
-      triggerError('Error with deleting blog')
+      props.triggerError('Error with deleting blog')
     }
   }
 
@@ -201,16 +197,23 @@ const App = () => {
   }
 
 
-
   return (
     <div>
-      <ShowErrormsg message={errormsg} />
-      <ShowSuccessmsg message={successmsg} />
+      <ShowErrormsg />
+      <ShowSuccessmsg />
       {user === null ?
         loginPage() :
         loggedInPage() }
     </div>
   )
 }
+
+const mapStateToProps = (state) => {
+  return {
+    notification: state
+  }
+}
+
+const App = connect(mapStateToProps, { triggerSuccess, triggerError })(RawApp)
 
 export default App
