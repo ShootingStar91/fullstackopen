@@ -65,14 +65,14 @@ const notificationReducer = (state = { success_msg: '',
     if (state.success_id) {
       clearTimeout(state.success_id)
     }
-    return { success_msg: action.data.msg, success_timeout_id: action.data.id,
+    return { success_msg: action.data.msg, success_timeout_id: action.data.success_id,
       error_msg: state.error_msg, error_timeout_id: state.error_timeout_id }
   case 'SET_ERROR':
     if (state.error_id) {
       clearTimeout(state.error_id)
     }
-    return { error_msg: action.data.msg, error_timeout_id: action.data.id,
-      success_msg: state.error_msg, success_timeout_id: state.error_timeout_id }
+    return { error_msg: action.data.msg, error_timeout_id: action.data.error_id,
+      success_msg: state.success_msg, success_timeout_id: state.error_timeout_id }
   case 'EMPTY_SUCCESS':
     return { success_timeout_id: null, success_msg: '', error_msg: state.error_msg, error_timeout_id: state.error_timeout_id }
   case 'EMPTY_ERROR':

@@ -1,8 +1,12 @@
 import { React, useState } from 'react'
 import PropTypes from 'prop-types'
+import { likeBlog, deleteBlog } from '../reducers/blogReducer'
+import { useDispatch } from 'react-redux'
 
-const Blog = ({ blog, likeButtonClicked, deleteButtonClicked }) => {
-
+const Blog = ( { blog } ) => {
+  const dispatch = useDispatch()
+  console.log('blog inside blog')
+  console.log(blog)
   const [visible, setVisible] = useState(false)
   const blogStyle = {
     paddingTop: 6,
@@ -12,16 +16,8 @@ const Blog = ({ blog, likeButtonClicked, deleteButtonClicked }) => {
     marginBottom: 6
   }
 
-  const handleDeleteButton = () => {
-    deleteButtonClicked(blog)
-  }
 
-  const handleLikeButton = () => {
-    likeButtonClicked(
-      blog
-    )
-    blog.likes += 1
-  }
+
 
   if (visible) {
     return (
@@ -29,12 +25,12 @@ const Blog = ({ blog, likeButtonClicked, deleteButtonClicked }) => {
         <div><b>Title: </b> {blog.title} <button onClick={() => setVisible(false)}>Hide</button></div>
         <div><b>Author:</b> {blog.author}</div>
         <div><b>Url:   </b> {blog.url}</div>
-        <div><b>Likes: </b> {blog.likes} <button data-cy='like-button' onClick={handleLikeButton}>Like</button></div>
+        <div><b>Likes: </b> {blog.likes} <button data-cy='like-button' onClick={() => dispatch(likeBlog(blog))}>Like</button></div>
         {blog.user ?
           <div><b>Added by:</b> {blog.user.name}</div> :
           <div><b>Added by:</b> Data missing.</div>
         }
-        <div><button data-cy='delete-button' onClick={handleDeleteButton}>Remove</button></div>
+        <div><button data-cy='delete-button' onClick={() => dispatch(deleteBlog(blog))}>Remove</button></div>
       </div>
     )
   }
@@ -48,8 +44,6 @@ const Blog = ({ blog, likeButtonClicked, deleteButtonClicked }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  likeButtonClicked: PropTypes.func.isRequired,
-  deleteButtonClicked: PropTypes.func.isRequired
 }
 
 export default Blog
