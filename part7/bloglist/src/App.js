@@ -173,7 +173,6 @@ const RawApp = (props) => {
   const padding = {
     padding: 4
   }
-  // {props.user.name} is logged in. <button id='logout-button' onClick={props.handleLogoutButton}>Logout</button>
 
   return (
     <div className="container">

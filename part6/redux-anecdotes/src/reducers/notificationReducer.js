@@ -33,7 +33,7 @@ export const emptyNotification = () => {
 const notificationReducer = (state = {msg: 'Initial notification', timeout_id: null}, action) => {
   //console.log("notificationReducer STATE: ", state, " ACTION: ", action)
   switch (action.type) {
-    case 'SET_z':
+    case 'SET_NOTIFICATION':
       if (state.id) {
         clearTimeout(state.id)
       }
