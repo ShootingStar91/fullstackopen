@@ -1,5 +1,4 @@
 import { React } from 'react'
-import PropTypes from 'prop-types'
 import { likeBlog, deleteBlog } from '../reducers/blogReducer'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -35,8 +34,5 @@ const Blog = (props) => {
   )
 }
 
-Blog.propTypes = {
-  blog: PropTypes.object.isRequired,
-}
 
 export default Blog

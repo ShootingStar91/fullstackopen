@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import BlogForm from './BlogForm'
+import { Table } from 'react-bootstrap'
 
 const Blogs = (
   props
@@ -10,33 +11,36 @@ const Blogs = (
   if (!props.user) {
     return null
   }
-  return (<div>
+  return (
     <div>
       <h2>Blogs</h2>
-      <p>{props.user.name} is logged in. <button id='logout-button' onClick={props.handleLogoutButton}>Logout</button></p>
-      {props.blogs.map(blog =>
-        <div key={blog.id}>
-          <a href={`/blogs/${blog.id}`}>{blog.title} {blog.author}</a>
-        </div>
-      )}
-    </div>
-    {
-      blogFormVisible ? <div><BlogForm postBlog={props.handleSubmitBlogButton}/>
-        <p>
-          <button onClick={() => setBlogFormVisible(false)}>
+      <Table striped>
+        <tbody>
+          {props.blogs.map(blog =>
+            <tr key={blog.id}><td>
+              <a href={`/blogs/${blog.id}`}>{blog.title} {blog.author}</a>
+            </td>
+            </tr>
+          )}
+        </tbody>
+      </Table>
+      {
+        blogFormVisible ? <div><BlogForm postBlog={props.handleSubmitBlogButton}/>
+          <p>
+            <button onClick={() => setBlogFormVisible(false)}>
           Cancel
-          </button>
-        </p>
-      </div> :
-        <div>
-          <br/>
-          <br/>
-          <button id='show-blog-form-button' onClick={() => setBlogFormVisible(true)}>
+            </button>
+          </p>
+        </div> :
+          <div>
+            <br/>
+            <br/>
+            <button id='show-blog-form-button' onClick={() => setBlogFormVisible(true)}>
         Add new blog
-          </button>
-        </div>
-    }
-  </div>)
+            </button>
+          </div>
+      }
+    </div>)
 }
 
 export default Blogs

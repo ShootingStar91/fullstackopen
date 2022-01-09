@@ -8,10 +8,12 @@ import { tryLogin, logout, checkLogin } from './reducers/userReducer'
 import { addBlog, initBlogs } from './reducers/blogReducer'
 import { connect } from 'react-redux'
 import userService from './services/users'
+import { Navbar, Nav } from 'react-bootstrap'
 
 import {
   Routes,
   Route,
+  Link
 } from 'react-router-dom'
 
 const ShowErrormsg = () => {
@@ -168,10 +170,32 @@ const RawApp = (props) => {
     blogs
   }
 
+  const padding = {
+    padding: 4
+  }
+  // {props.user.name} is logged in. <button id='logout-button' onClick={props.handleLogoutButton}>Logout</button>
+
   return (
-    <>
+    <div className="container">
       <ShowErrormsg />
       <ShowSuccessmsg />
+      <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/">Home</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              <Link style={padding} to="/users">Users</Link>
+            </Nav.Link>
+            <Nav.Link href="#" as="span">
+              { user ? <em>{user.name}logged in<button id='logout-button' onClick={handleLogoutButton}>Logout</button></em>: <Link to="/login">Login</Link> }
+            </Nav.Link>
+
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
       <Routes>
         <Route path="/users/:id" element={<User user={user} blogs={blogs} />} />
         <Route path="/users" element={<Users users={users} />} />
@@ -179,7 +203,7 @@ const RawApp = (props) => {
         <Route path="/blogs" element={<Blogs />} />
         <Route path="/" element={<BasePage { ...basePageProps } />} />
       </Routes>
-    </>
+    </div>
   )
 }
 
