@@ -7,8 +7,10 @@ const tryLogin = (username, password) => {
     { username: username, password: password })
 
   return request.then(response => {
+    console.log('RESPONSE FROM tryLogin')
+    console.log(response)
     return { username: username, token: response.data.token,
-      name: response.data.name }
+      name: response.data.name, id: response.data.id }
   })
 }
 

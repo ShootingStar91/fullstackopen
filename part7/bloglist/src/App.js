@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
+import Blogs from './components/Blogs'
 import Blog from './components/Blog'
-import BlogForm from './components/BlogForm'
+import User from './components/User'
 import { triggerError, triggerSuccess } from './reducers/notificationReducer'
 import { tryLogin, logout, checkLogin } from './reducers/userReducer'
 import { addBlog, initBlogs } from './reducers/blogReducer'
 import { connect } from 'react-redux'
+import userService from './services/users'
+
+import {
+  Routes,
+  Route,
+} from 'react-router-dom'
 
 const ShowErrormsg = () => {
   const message = useSelector(state => state.notifications.error_msg)
@@ -29,6 +36,8 @@ const ShowSuccessmsg = () => {
 }
 
 const LoginPage = (props) => {
+  console.log('LOGIN PAGE PROPS')
+  console.log(props)
   return (
     <div>
       <h2>Login to bloglist app</h2>
@@ -47,29 +56,62 @@ const LoginPage = (props) => {
 }
 
 const Users = (props) => {
+  console.log('PROPS INSIDE USERS COMPONENT:')
+  console.log(props)
+  if (!props.users || props.users.length < 1) {
+    return null
+  }
   return (
     <div>
       <h2>Users</h2>
       <table>
-        <tr>
-          <th></th>
-          <th>Blogs created</th>
-        </tr>
-        {props.users.map(user => <tr key={user.id}><th>{user.name}</th><th>{props.user.blogs.length}</th></tr>)}
+        <tbody>
+          <tr>
+            <th></th>
+            <th>Blogs created</th>
+          </tr>
+          {props.users.map(user => <tr key={user.id}><td><a href={`/users/${user.id}`}>{user.name}</a></td><td>{user.blogs.length}</td></tr>)}
+        </tbody>
       </table>
     </div>
   )
 }
 
+const BasePage = (
+  props
+) => {
+  console.log('BASE PAGE props')
+  console.log(props)
+
+  if (!props.user) {
+    return (
+      <LoginPage
+        handleLoginButton={props.handleLoginButton}
+        handleUsernameChange={props.handleUsernameChange}
+        handlePasswordChange={props.handlePasswordChange} />
+    )
+  }
+  else {
+    return (
+      <Blogs
+        handleSubmitBlogButton={props.handleSubmitBlogButton}
+        handleLogoutButton={props.handleLogoutButton}
+        user={props.user}
+        blogs={props.blogs} />
+    )
+  }
+
+
+}
+
 const RawApp = (props) => {
   const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.user)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const user = useSelector(state => state.user)
+  const [users, setUsers] = useState([])
   console.log('Blogs at start of App: ')
   console.log(blogs)
-
-  const [blogFormVisible, setBlogFormVisible] = useState(false)
 
   const refreshBlogs = () => {
     props.initBlogs()
@@ -85,6 +127,10 @@ const RawApp = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    userService.getAll().then(response => setUsers(response))
+  }, [])
+
   const handleUsernameChange = (event) => {
     setUsername(event.target.value)
   }
@@ -93,66 +139,47 @@ const RawApp = (props) => {
     setPassword(event.target.value)
   }
 
-  const handleLogin = (event) => {
+  const handleLoginButton = (event) => {
     event.preventDefault()
     console.log('Trying to login with ', username, ' ', password)
     props.tryLogin(username, password)
   }
 
-  const submitBlog = async (title, author, url) => {
+  const handleLogoutButton = (event) => {
+    event.preventDefault()
+    props.logout()
+  }
+
+  const handleSubmitBlogButton = async (title, author, url) => {
     props.addBlog(title, author, url)
     refreshBlogs()
-    setBlogFormVisible(false)
   }
 
+  console.log('USERS HERE')
+  console.log(users)
 
-  const loginPage = () => {
-    return (
-      <LoginPage
-        handleLoginButton={handleLogin}
-        handleUsernameChange={handleUsernameChange}
-        handlePasswordChange={handlePasswordChange} />)
+  const basePageProps = {
+    handleLoginButton,
+    handleLogoutButton,
+    handleSubmitBlogButton,
+    handlePasswordChange,
+    handleUsernameChange,
+    user,
+    blogs
   }
-
-
-
-  const loggedInPage = () => {
-    return (<div>
-      <div>
-        <h2>Blogs</h2>
-        <p>{user.name} is logged in. <button id='logout-button' onClick={() => props.logout()}>Logout</button></p>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
-      </div>
-      {
-        blogFormVisible ? <div><BlogForm postBlog={submitBlog}/>
-          <p>
-            <button onClick={() => setBlogFormVisible(false)}>
-            Cancel
-            </button>
-          </p>
-        </div> :
-          <div>
-            <br/>
-            <br/>
-            <button id='show-blog-form-button' onClick={() => setBlogFormVisible(true)}>
-          Add new blog
-            </button>
-          </div>
-      }
-    </div>)
-  }
-
 
   return (
-    <div>
+    <>
       <ShowErrormsg />
       <ShowSuccessmsg />
-      {user === null ?
-        loginPage() :
-        loggedInPage() }
-    </div>
+      <Routes>
+        <Route path="/users/:id" element={<User user={user} blogs={blogs} />} />
+        <Route path="/users" element={<Users users={users} />} />
+        <Route path="/blogs/:id" element={<Blog blogs={blogs} />} />
+        <Route path="/blogs" element={<Blogs />} />
+        <Route path="/" element={<BasePage { ...basePageProps } />} />
+      </Routes>
+    </>
   )
 }
 
